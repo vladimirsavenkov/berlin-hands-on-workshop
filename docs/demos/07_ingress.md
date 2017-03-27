@@ -255,8 +255,8 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: whitelist
-  annotations:
-    ingress.kubernetes.io/whitelist-source-range: "<YOUR_PUBLICIP>/32"
+annotations:
+  ingress.kubernetes.io/whitelist-source-range: "<YOUR_PUBLICIP>/32"
 spec:
   rules:
   - host: whitelist.test.net
@@ -281,22 +281,7 @@ kubectl create -f ingress/ingress-whitelist.yaml
 ### Testing with the annotation set:
 
 ```
-curl -v -H "Host: whitelist.test.net" <CLUSTER_IP>/graph
-* Trying <HOST-IP>...
-* TCP_NODELAY set
-* Connected to <HOST-IP> (<HOST-IP>) port 80 (#0)
-> GET /graph HTTP/1.1
-> Host: whitelist.test.net
-> User-Agent: curl/7.51.0
-> Accept: */*
-> 
-< HTTP/1.1 403 Forbidden
-< Server: nginx/1.11.3
-< Date: Tue, 07 Feb 2017 09:46:51 GMT
-< Content-Type: text/html
-< Content-Length: 169
-< Connection: keep-alive
-< 
+curl -H "Host: whitelist.test.net" http://<INGRESS_IP>/
 <html>
 <head><title>403 Forbidden</title></head>
 <body bgcolor="white">
@@ -304,35 +289,8 @@ curl -v -H "Host: whitelist.test.net" <CLUSTER_IP>/graph
 <hr><center>nginx/1.11.3</center>
 </body>
 </html>
-* Curl_http_done: called premature == 0
-* Connection #0 to host <HOST-IP> left intact
+
 ```
-
-----
-
-### Testing without the annotation set:
-
-```bash
-curl -v -H "Host: whitelist.test.net" <CLUSTER_IP>/graph
-* Trying <HOST-IP>...
-* TCP_NODELAY set
-* Connected to <HOST-IP> (<HOST-IP>) port 80 (#0)
-> GET /graph HTTP/1.1
-> Host: whitelist.test.net
-> User-Agent: curl/7.51.0
-> Accept: */*
-> 
-< HTTP/1.1 200 OK
-< Server: nginx/1.11.3
-< Date: Tue, 07 Feb 2017 09:49:01 GMT
-< Content-Type: text/html; charset=utf-8
-< Transfer-Encoding: chunked
-< Connection: keep-alive
-
-* Curl_http_done: called premature == 0
-* Connection #0 to host <HOST-IP> left intact
-```
-
 Using this simple annotation, you’re able to restrict who can access the applications in your kubernetes cluster by its IPs.
 
 ----
@@ -374,9 +332,9 @@ kubectl create -f ingress/ingress-rewrite.yaml
 ### Validate the rule
 
 ```
-curl -H "Host: rewrite.bar.com" http://$(minikube ip)/something
+curl -H "Host: rewrite.bar.com" http://<INGRESS_IP>/something
 CLIENT VALUES:
-client_address=172.17.0.6
+client_address=172.16.202.0
 command=GET
 real path=/
 query=nil
@@ -390,16 +348,13 @@ HEADERS RECEIVED:
 accept=*/*
 connection=close
 host=rewrite.bar.com
-user-agent=curl/7.51.0
-x-forwarded-for=::ffff:192.168.99.1
+user-agent=curl/7.47.0
+x-forwarded-for=139.59.130.207
 x-forwarded-host=rewrite.bar.com
 x-forwarded-port=80
 x-forwarded-proto=http
-x-original-uri=/something
-x-real-ip=::ffff:192.168.99.1
-x-scheme=http
+x-real-ip=139.59.130.207
 BODY:
--no body in request
 ```
 
 ----

@@ -122,7 +122,7 @@ This will create a single pod on your node that requests 1/10 of a CPU, but it h
 
 ----
 
-To demonstrate this, you can use `kubectl top pod <PODNAME>` to view the the used CPU shares
+To demonstrate this, you can use `kubectl top pod <PODNAME>` to view the the used CPU shares. This might take some time.
 
 ```
 kubectl top pod cpustress-4101692926-zqw2p

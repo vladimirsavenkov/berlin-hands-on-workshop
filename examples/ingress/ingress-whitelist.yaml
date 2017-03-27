@@ -7,9 +7,9 @@ metadata:
 spec:
   rules:
   - host: whitelist.test.net
-  http:
-    paths:
-    - path: /
-    backend:
-      serviceName: webserver
-      servicePort: 80
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: webserver
+          servicePort: 80
