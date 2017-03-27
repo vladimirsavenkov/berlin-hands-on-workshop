@@ -138,7 +138,8 @@ kubernetes       10.0.0.1     <none>        443/TCP          28m
 ```
 Access the application with curl
 ```
-curl <CLUSTER_IP>:31075
+kubectl describe nodes worker1 | grep Addresses
+curl <WORKER_IP>:<SVC_PORT>
 ```
 
 ----

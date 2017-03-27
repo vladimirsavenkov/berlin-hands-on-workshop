@@ -2,8 +2,8 @@
 
 At the core of Kubernetes is the Pod. Pods represent a logical application and hold a collection of one or more containers and volumes. In this section you will:
 
-* Create a simple Hello World node.js application
-* Create a docker container image
+* Schedule a simple Hello World node.js application
+* Schedule a docker container image
 * Write a Pod configuration file
 * Create and inspect Pods
 * Interact with Pods remotely using kubectl
@@ -12,7 +12,7 @@ We'll create a Pod named `hello-world` and interact with it using the kubectl.
 
 ----
 
-### Create your node.js app
+### Check the node.js app
 
 A simple “hello world”: server.js (note the port number argument to www.listen):
 ```
@@ -25,13 +25,12 @@ var www = http.createServer(handleRequest);
 www.listen(8080);
 ```
 
-Save that to a file called `server.js`
+The file is called `server.js`
 
 ----
 
-### Create a docker container image
+### The docker container image
 
-Create the file `Dockerfile` for hello-node (note port 8080 in the EXPOSE command):
 ```
 FROM node:6.9
 COPY server.js /
@@ -41,20 +40,10 @@ EXPOSE 8080
 
 ----
 
-### Build the container
-
-We will build the container on minikube
-
-```
-docker build -t hello-node:v1 .
-```
-
-----
-
 ### Create your app on K8s
 
 ```
-kubectl run hello-node --image=hello-node:v1 --port=8080
+kubectl run hello-node --image=muellermich/hello-node:v1 --port=8080
 deployment "hello-node" created
 ```
 
@@ -99,7 +88,7 @@ metadata:
 spec:
   containers:
     - name: hello-node
-      image: hello-node:v1
+      image: muellermich/hello-node:v1
       ports:
         - containerPort: 8080
 ```

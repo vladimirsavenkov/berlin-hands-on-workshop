@@ -137,6 +137,8 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata: 
   name: echomap
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
 spec: 
   rules: 
     - host: foo.bar.com
@@ -168,26 +170,30 @@ We can use curl or a browser, but need to send a Host header. So either edit `/e
 Here we'll use `curl`
 
 ```
-curl -H "Host: foo.bar.com" http://$(minikube ip)/bar
-curl -H "Host: bar.baz.com" http://$(minikube ip)/bar
-curl -H "Host: bar.baz.com" http://$(minikube ip)/foo
+kubectl describe nodes ingress1 | grep Address
+curl -H "Host: foo.bar.com" http://<INGRESS_IP>/bar
+curl -H "Host: bar.baz.com" http://<INGRESS_IP>/bar
+curl -H "Host: bar.baz.com" http://<INGRESS_IP>/foo
 ```
 
 ----
 
 ### Enabling SSL
 
-We want to have SSL for our services enabled. So let's create first the needed certificates for `foo.bar.com`:
+If you want to have SSL for our services enabled, created the needed certificates for `foo.bar.com`:
 
 ```
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key \
--out tls.crt -subj "/CN=foo.bar.com"
+  -out tls.crt -subj "/CN=foo.bar.com"
+openssl dhparam -out dhparam.pem 4096
 ```
 No openssl available? No problem!
 ```
 docker run --rm -v $PWD:/work -it nginx openssl req -x509 -nodes \
--days 365 -newkey rsa:2048 -keyout /work/tls.key -out /work/tls.crt \
--subj "/CN=foo.bar.com"
+  -days 365 -newkey rsa:2048 -keyout /work/tls.key -out /work/tls.crt \
+  -subj "/CN=foo.bar.com"
+docker run --rm -v $PWD:/work -it nginx openssl dhparam \
+  -out /work/dhparam.pem 4096
 ```
 
 ----

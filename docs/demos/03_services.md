@@ -59,7 +59,7 @@ kubectl create -f services/service.yaml
 Interact with the hello-node Service Remotely
 
 ```
-curl -i 0.0.0.0:30080
+curl -i <WORKER_IP>:30080
 ```
 
 ----
@@ -88,4 +88,12 @@ With the `kubectl label` command you can add labels like `secure=disabled` to a 
 
 ```
 kubectl label pods hello-node 'secure=disabled'
+```
+
+----
+
+### Cleanup
+
+```
+kubectl delete -f pods/pod.yaml
 ```
