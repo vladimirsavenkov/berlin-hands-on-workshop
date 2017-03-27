@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: whitelist
+  annotations:
+    ingress.kubernetes.io/whitelist-source-range: "<YOUR_PUBLICIP>/32"
+spec:
+  rules:
+  - host: whitelist.test.net
+  http:
+    paths:
+    - path: /
+    backend:
+      serviceName: webserver
+      servicePort: 80

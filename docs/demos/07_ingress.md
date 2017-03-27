@@ -233,7 +233,7 @@ spec:
 
 ```
 kubectl create -f ingress/ingress-ssl.yaml
-curl -H "Host: foo.bar.com" https://$(minikube ip)/ssl --insecure
+curl -H "Host: foo.bar.com" https://<INGRESS_IP>/ssl --insecure
 ```
 
 ----
@@ -249,7 +249,7 @@ If you want to set a default global set of IPs this needs to be set in the confi
 ----
 
 ### The configuration:
-Find out your public ip: `curl ifconfig.co`
+Find out your public ip: `curl ifconfig.co` and edit the ingress/
 ```
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -266,6 +266,14 @@ spec:
     backend:
       serviceName: webserver
       servicePort: 80
+```
+
+----
+
+### Create the ingress
+
+```
+kubectl create -f ingress/ingress-whitelist.yaml
 ```
 
 ----
