@@ -74,7 +74,7 @@ We now have a connection between our host and the Kubernetes cluster.
 
 ### Inspect your application
 
-With `kubectl get <obejct>` and `kubectl describe <object>` you can gather information about the status of your objects like pods, deployments, services, ...
+With `kubectl get <object>` and `kubectl describe <object>` you can gather information about the status of your objects like pods, deployments, services, ...
 
 ----
 
